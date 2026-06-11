@@ -1,4 +1,7 @@
 {
+  "common": {
+    "logoAlt": "Logo Pilateq"
+  },
   "nav": {
     "features": "Funzionalità",
     "forStudios": "Per Studios",
@@ -161,6 +164,7 @@
       "messagePlaceholder": "Parlaci del tuo studio, quanti membri hai, cosa cerchi...",
       "submit": "Inizia la Mia Prova Gratuita",
       "sending": "Invio in corso...",
+      "error": "Impossibile inviare il modulo. Riprova o scrivici direttamente a info@pilateq.de.",
       "disclaimer": "Nessuna carta di credito richiesta. Prova di 14 giorni."
     },
     "nextSteps": {

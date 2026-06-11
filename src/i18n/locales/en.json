@@ -1,4 +1,7 @@
 {
+  "common": {
+    "logoAlt": "Pilateq logo"
+  },
   "nav": {
     "features": "Features",
     "forStudios": "For Studios",
@@ -161,6 +164,7 @@
       "messagePlaceholder": "Tell us about your studio, how many members you have, what you're looking for...",
       "submit": "Start My Free Trial",
       "sending": "Sending...",
+      "error": "The form could not be sent. Please try again or email us directly at info@pilateq.de.",
       "disclaimer": "No credit card required. 14-day free trial."
     },
     "nextSteps": {

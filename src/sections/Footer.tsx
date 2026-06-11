@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import Logo from '@/components/Logo';
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -10,7 +11,10 @@ const Footer: React.FC = () => {
       <div className="max-w-[1100px] mx-auto px-5 sm:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="font-display text-lg font-semibold text-cream block mb-2 hover:text-tan transition-colors">Pilateq</Link>
+            <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold text-cream mb-2 hover:text-tan transition-colors" aria-label={t('common.logoAlt')}>
+              <Logo size={28} variant="light" lazy alt={t('common.logoAlt')} />
+              <span>Pilateq</span>
+            </Link>
             <p className="font-body text-[13px] text-cream/45 leading-relaxed">{t('footer.tagline')}</p>
           </div>
           <div>

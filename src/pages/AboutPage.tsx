@@ -7,6 +7,7 @@ import {
   Target, Users, Lightbulb, Heart, Zap,
 } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import Logo from '@/components/Logo';
 
 const AboutPage: React.FC = () => {
   const { t } = useTranslation();
@@ -34,7 +35,10 @@ const AboutPage: React.FC = () => {
           <Link to="/" className="flex items-center gap-2 font-body text-sm text-brown/70 hover:text-brown transition-colors min-h-[44px]">
             <ArrowLeft className="w-4 h-4" />{t('about.back')}
           </Link>
-          <Link to="/" className="font-display text-[22px] font-semibold text-brown hover:text-tan transition-colors">Pilateq</Link>
+          <Link to="/" className="flex items-center gap-2 font-display text-[22px] font-semibold text-brown hover:text-tan transition-colors" aria-label={t('common.logoAlt')}>
+            <Logo size={32} alt={t('common.logoAlt')} />
+            <span>Pilateq</span>
+          </Link>
         </div>
       </header>
 

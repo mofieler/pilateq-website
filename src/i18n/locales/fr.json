@@ -1,4 +1,7 @@
 {
+  "common": {
+    "logoAlt": "Logo Pilateq"
+  },
   "nav": {
     "features": "Fonctionnalités",
     "forStudios": "Pour les Studios",
@@ -161,6 +164,7 @@
       "messagePlaceholder": "Parlez-nous de votre studio, combien de membres vous avez, ce que vous recherchez...",
       "submit": "Commencer Mon Essai Gratuit",
       "sending": "Envoi en cours...",
+      "error": "Le formulaire n'a pas pu être envoyé. Veuillez réessayer ou nous écrire directement à info@pilateq.de.",
       "disclaimer": "Aucune carte de crédit requise. Essai de 14 jours."
     },
     "nextSteps": {

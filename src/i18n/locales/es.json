@@ -1,4 +1,7 @@
 {
+  "common": {
+    "logoAlt": "Logotipo de Pilateq"
+  },
   "nav": {
     "features": "Funciones",
     "forStudios": "Para Estudios",
@@ -161,6 +164,7 @@
       "messagePlaceholder": "Cuéntanos sobre tu estudio, cuántos miembros tienes, qué buscas...",
       "submit": "Iniciar Mi Prueba Gratuita",
       "sending": "Enviando...",
+      "error": "No se pudo enviar el formulario. Inténtalo de nuevo o escríbenos directamente a info@pilateq.de.",
       "disclaimer": "No se requiere tarjeta de crédito. Prueba de 14 días."
     },
     "nextSteps": {

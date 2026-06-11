@@ -1,110 +1,208 @@
 /**
- * PILATEQ - Resend Email Backend
- * ================================
- * 
- * This is a minimal Express server that receives contact form submissions
- * and sends them via Resend. Deploy this on your server (Vercel, Railway,
- * Render, or any Node.js host).
- * 
- * Setup:
- * 1. npm install express cors resend
- * 2. Set RESEND_API_KEY environment variable
- * 3. Update RESEND_FROM_EMAIL with your verified domain
- * 4. node resend-backend.js
- * 
- * The frontend expects this API at: /api/send
+ * PILATEQ - Production Email Backend
+ * ==================================
+ *
+ * A single Express service that:
+ *   1. Serves the built Vite frontend from ./dist
+ *   2. Exposes /api/send for contact form submissions via Resend
+ *   3. Sends an admin notification AND a localized confirmation to the user
+ *
+ * Coolify deployment:
+ *   - Build command: npm install && npm run build
+ *   - Start command: node resend-backend.js
+ *   - Required env vars: RESEND_API_KEY, RESEND_FROM_EMAIL, PUBLIC_SITE_URL
+ *   - Optional env vars: ADMIN_EMAIL, RATE_LIMIT_WINDOW_MS, RATE_LIMIT_MAX
  */
 
-const express = require('express');
-const cors = require('cors');
-const { Resend } = require('resend');
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { Resend } from 'resend';
+import { adminEmail, userConfirmationEmail } from './server/emailTemplates.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Initialize Resend with your API key
-const resend = new Resend(process.env.RESEND_API_KEY);
+// ---------------------------------------------------------------------------
+// Configuration
+// ---------------------------------------------------------------------------
 
-// CORS: Allow your frontend domain
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://your-domain.com',
-  methods: ['POST'],
-}));
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Pilateq <onboarding@resend.dev>';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'info@pilateq.de';
+const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://pilateq.de').replace(/\/$/, '');
 
-app.use(express.json());
+const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10); // 15 min
+const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || '5', 10); // 5 requests per window
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+// Simple in-memory rate limiter (sufficient for a single-instance VPS; use Redis for multi-instance)
+const ipHits = new Map();
+
+// ---------------------------------------------------------------------------
+// Middleware
+// ---------------------------------------------------------------------------
+
+app.use(express.json({ limit: '256kb' }));
+
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
 });
 
-// Send email endpoint
+// Trust proxy so req.ip is correct behind Coolify/reverse proxy
+app.set('trust proxy', 1);
+
+// CORS: only needed if frontend and backend run on different origins.
+// In the single-service Coolify setup, same-origin requests bypass CORS preflight.
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || PUBLIC_SITE_URL,
+    methods: ['POST', 'GET'],
+  })
+);
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+const isValidEmail = (email) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email));
+
+const rateLimit = (ip) => {
+  const now = Date.now();
+  const record = ipHits.get(ip) || { count: 0, resetAt: now + RATE_LIMIT_WINDOW_MS };
+
+  if (now > record.resetAt) {
+    record.count = 0;
+    record.resetAt = now + RATE_LIMIT_WINDOW_MS;
+  }
+
+  record.count += 1;
+  ipHits.set(ip, record);
+
+  return record.count > RATE_LIMIT_MAX;
+};
+
+const sanitize = (value, maxLength = 2000) =>
+  String(value || '')
+    .trim()
+    .slice(0, maxLength);
+
+// ---------------------------------------------------------------------------
+// API routes
+// ---------------------------------------------------------------------------
+
+app.get('/api/health', (_req, res) => {
+  res.json({
+    status: 'ok',
+    time: new Date().toISOString(),
+    env: process.env.NODE_ENV || 'development',
+    resendConfigured: Boolean(RESEND_API_KEY && RESEND_FROM_EMAIL),
+  });
+});
+
 app.post('/api/send', async (req, res) => {
   try {
-    const { name, email, studio, message } = req.body;
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
 
-    // Validate required fields
-    if (!name || !email) {
-      return res.status(400).json({
-        error: 'Name and email are required',
-      });
+    if (rateLimit(clientIp)) {
+      return res.status(429).json({ error: 'Too many requests. Please try again later.' });
     }
 
-    // Send email via Resend
-    const { data, error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'Pilateq <onboarding@resend.dev>',
-      to: 'info@pilateq.de',
+    // Honeypot: if "website" field is filled, silently reject (basic bot protection)
+    if (req.body.website) {
+      return res.status(400).json({ error: 'Invalid submission' });
+    }
+
+    const name = sanitize(req.body.name, 120);
+    const email = sanitize(req.body.email, 120).toLowerCase();
+    const studio = sanitize(req.body.studio, 120);
+    const message = sanitize(req.body.message, 3000);
+    const locale = sanitize(req.body.locale, 5) || 'de';
+
+    if (!name || !email) {
+      return res.status(400).json({ error: 'Name and email are required.' });
+    }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: 'Please enter a valid email address.' });
+    }
+
+    if (!RESEND_API_KEY) {
+      console.error('RESEND_API_KEY is not configured');
+      return res.status(503).json({ error: 'Email service is not configured.' });
+    }
+
+    const resend = new Resend(RESEND_API_KEY);
+    const payload = { name, email, studio, message, locale };
+
+    // 1. Admin notification
+    const admin = adminEmail(payload, PUBLIC_SITE_URL);
+    const adminResult = await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
+      to: ADMIN_EMAIL,
       replyTo: email,
-      subject: `New Pilateq Trial Request from ${name}`,
-      html: `
-        <div style="font-family: 'Outfit', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background: #FAF6F0;">
-          <div style="background: white; border-radius: 24px; padding: 40px;">
-            <h1 style="color: #4A3427; font-size: 24px; margin-bottom: 24px; font-family: 'Cormorant Garamond', serif;">
-              New Trial Request
-            </h1>
-            
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 12px 0; color: #C4956A; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; width: 120px;">Name</td>
-                <td style="padding: 12px 0; color: #4A3427; font-size: 15px;">${name}</td>
-              </tr>
-              <tr style="border-top: 1px solid #F0EAE0;">
-                <td style="padding: 12px 0; color: #C4956A; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Email</td>
-                <td style="padding: 12px 0; color: #4A3427; font-size: 15px;">${email}</td>
-              </tr>
-              <tr style="border-top: 1px solid #F0EAE0;">
-                <td style="padding: 12px 0; color: #C4956A; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Studio</td>
-                <td style="padding: 12px 0; color: #4A3427; font-size: 15px;">${studio || 'Not provided'}</td>
-              </tr>
-              <tr style="border-top: 1px solid #F0EAE0;">
-                <td style="padding: 12px 0; color: #C4956A; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; vertical-align: top;">Message</td>
-                <td style="padding: 12px 0; color: #4A3427; font-size: 15px;">${message || 'No message'}</td>
-              </tr>
-            </table>
-            
-            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #F0EAE0;">
-              <p style="color: #4A3427; font-size: 13px; opacity: 0.5;">
-                Sent from pilateq.de contact form
-              </p>
-            </div>
-          </div>
-        </div>
-      `,
-      text: `New Pilateq Trial Request\\n\\nName: ${name}\\nEmail: ${email}\\nStudio: ${studio || 'N/A'}\\nMessage: ${message || 'No message'}`,
+      subject: admin.subject,
+      html: admin.html,
+      text: admin.text,
     });
 
-    if (error) {
-      console.error('Resend error:', error);
-      return res.status(500).json({ error: 'Failed to send email' });
+    if (adminResult.error) {
+      console.error('Resend admin email error:', adminResult.error);
+      return res.status(500).json({ error: 'Failed to send message. Please try again later.' });
     }
 
-    res.json({ success: true, messageId: data?.id });
+    // 2. User confirmation email
+    const user = userConfirmationEmail(payload, PUBLIC_SITE_URL);
+    const userResult = await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
+      to: email,
+      subject: user.subject,
+      html: user.html,
+      text: user.text,
+    });
+
+    if (userResult.error) {
+      // Admin mail succeeded, user mail failed — log but don't fail the request
+      console.error('Resend user confirmation error:', userResult.error);
+    }
+
+    res.json({
+      success: true,
+      messageId: adminResult.data?.id,
+      confirmationSent: !userResult.error,
+    });
   } catch (err) {
     console.error('Server error:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error. Please try again later.' });
   }
 });
 
+// ---------------------------------------------------------------------------
+// Static frontend + SPA fallback
+// ---------------------------------------------------------------------------
+
+const distPath = path.join(__dirname, 'dist');
+
+app.use(express.static(distPath, { maxAge: '1d' }));
+
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
+// ---------------------------------------------------------------------------
+// Start
+// ---------------------------------------------------------------------------
+
 app.listen(PORT, () => {
-  console.log(`Pilateq email server running on port ${PORT}`);
+  console.log(`Pilateq server running on port ${PORT}`);
+  console.log(`Public URL: ${PUBLIC_SITE_URL}`);
+  console.log(`Admin email: ${ADMIN_EMAIL}`);
+  console.log(`Resend configured: ${Boolean(RESEND_API_KEY)}`);
 });

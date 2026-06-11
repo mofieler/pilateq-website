@@ -1,4 +1,7 @@
 {
+  "common": {
+    "logoAlt": "Pilateq Logo"
+  },
   "nav": {
     "features": "Funktionen",
     "forStudios": "Für Studios",
@@ -161,6 +164,7 @@
       "messagePlaceholder": "Erzähle uns von deinem Studio, wie viele Mitglieder du hast, wonach du suchst...",
       "submit": "Meine Testphase starten",
       "sending": "Wird gesendet...",
+      "error": "Das Formular konnte nicht gesendet werden. Bitte versuche es erneut oder schreibe uns direkt an info@pilateq.de.",
       "disclaimer": "Keine Kreditkarte erforderlich. 14-tägige Testphase."
     },
     "nextSteps": {

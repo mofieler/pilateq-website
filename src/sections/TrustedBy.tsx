@@ -2,7 +2,6 @@ import React from 'react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const studioNames = [
-  'Core Balance',
   'Pilates Flow',
   'Studio Form',
   'The Pilates Room',
@@ -26,7 +25,26 @@ const TrustedBy: React.FC = () => {
           Trusted by Boutique Studios
         </span>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-10 sm:gap-x-16 gap-y-5">
+        <div className="flex flex-wrap items-center justify-center gap-x-10 sm:gap-x-16 gap-y-6">
+          {/* Featured partner studio — Paquita Pilates */}
+          <div
+            className="flex flex-col items-center gap-1 transition-all duration-500 ease-out"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+              transitionDelay: '200ms',
+            }}
+          >
+            <img
+              src="/assets/logo_transparent.png"
+              alt="Paquita Pilates"
+              width={96}
+              height={96}
+              loading="lazy"
+              decoding="async"
+              className="h-16 sm:h-20 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+            />
+          </div>
           {studioNames.map((name, i) => (
             <span
               key={name}
@@ -34,7 +52,7 @@ const TrustedBy: React.FC = () => {
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                transitionDelay: `${i * 100 + 200}ms`,
+                transitionDelay: `${(i + 1) * 100 + 200}ms`,
               }}
             >
               {name}

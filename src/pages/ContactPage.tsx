@@ -1,40 +1,49 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Mail, MapPin, Phone, Clock, Check, Loader2 } from 'lucide-react';
+import { ArrowLeft, Mail, MapPin, Phone, Clock, Check, Loader2, AlertCircle } from 'lucide-react';
+import Logo from '@/components/Logo';
 
-const RESEND_API_URL = '/api/send';
+const RESEND_API_URL = import.meta.env.VITE_API_URL || '/api/send';
 
 const ContactPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', studio: '', message: '' });
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({ name: '', email: '', studio: '', message: '', website: '' });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+
     try {
       const response = await fetch(RESEND_API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: 'info@pilateq.de',
-          from: 'Pilateq <onboarding@resend.dev>',
-          subject: `New Trial Request from ${formData.name}`,
-          html: `<h2>New Pilateq Trial Request</h2><p><strong>Name:</strong> ${formData.name}</p><p><strong>Email:</strong> ${formData.email}</p><p><strong>Studio:</strong> ${formData.studio || 'Not provided'}</p><p><strong>Message:</strong> ${formData.message || 'No message'}</p>`,
+          name: formData.name,
+          email: formData.email,
+          studio: formData.studio,
+          message: formData.message,
+          website: formData.website, // honeypot
+          locale: i18n.language,
         }),
       });
-      if (response.ok) { setSubmitted(true); } else { openMailto(); }
-    } catch { openMailto(); }
-    finally { setLoading(false); }
-  };
 
-  const openMailto = () => {
-    const subject = encodeURIComponent(`Pilateq Trial Request from ${formData.name}`);
-    const body = encodeURIComponent(`Hi Pilateq Team,\n\nI'd like to start a free trial.\n\nName: ${formData.name}\nEmail: ${formData.email}\nStudio: ${formData.studio || 'N/A'}\n\n${formData.message || ''}\n\nBest regards`);
-    window.location.href = `mailto:info@pilateq.de?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setError(data.error || t('contact.form.error'));
+      }
+    } catch {
+      setError(t('contact.form.error'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactDetails = [
@@ -51,7 +60,10 @@ const ContactPage: React.FC = () => {
           <Link to="/" className="flex items-center gap-2 font-body text-sm text-brown/70 hover:text-brown transition-colors">
             <ArrowLeft className="w-4 h-4" />{t('contact.back')}
           </Link>
-          <Link to="/" className="font-display text-[22px] font-semibold text-brown hover:text-tan transition-colors">Pilateq</Link>
+          <Link to="/" className="flex items-center gap-2 font-display text-[22px] font-semibold text-brown hover:text-tan transition-colors" aria-label={t('common.logoAlt')}>
+            <Logo size={32} alt={t('common.logoAlt')} />
+            <span>Pilateq</span>
+          </Link>
         </div>
       </header>
 
@@ -111,6 +123,18 @@ const ContactPage: React.FC = () => {
             ) : (
               <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-brown/5">
                 <div className="space-y-5">
+                  {/* Honeypot: hidden from humans, traps bots */}
+                  <div className="hidden" aria-hidden="true">
+                    <input
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.website}
+                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                    />
+                  </div>
+
                   <div>
                     <label htmlFor="name" className="font-body text-sm font-medium text-brown mb-1.5 block">{t('contact.form.name')} *</label>
                     <input type="text" id="name" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-sand border border-brown/10 font-body text-sm text-brown placeholder:text-brown/40 focus:outline-none focus:ring-2 focus:ring-tan/50 transition-all" placeholder={t('contact.form.namePlaceholder')} />
@@ -127,6 +151,14 @@ const ContactPage: React.FC = () => {
                     <label htmlFor="message" className="font-body text-sm font-medium text-brown mb-1.5 block">{t('contact.form.message')} <span className="text-brown/40 font-normal">{t('contact.form.messageOptional')}</span></label>
                     <textarea id="message" rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-sand border border-brown/10 font-body text-sm text-brown placeholder:text-brown/40 focus:outline-none focus:ring-2 focus:ring-tan/50 transition-all resize-none" placeholder={t('contact.form.messagePlaceholder')} />
                   </div>
+
+                  {error && (
+                    <div className="flex items-start gap-2 p-3 rounded-xl bg-red-50 text-red-700 font-body text-sm">
+                      <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>{error}</span>
+                    </div>
+                  )}
+
                   <button type="submit" disabled={loading} className="w-full py-3.5 rounded-pill bg-tan text-white font-body font-semibold text-sm hover:bg-[#b08555] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 disabled:opacity-60 flex items-center justify-center gap-2">
                     {loading ? <><Loader2 className="w-4 h-4 animate-spin" />{t('contact.form.sending')}</> : t('contact.form.submit')}
                   </button>
