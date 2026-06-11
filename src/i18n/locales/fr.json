@@ -1,0 +1,279 @@
+{
+  "nav": {
+    "features": "Fonctionnalités",
+    "forStudios": "Pour les Studios",
+    "pricing": "Tarifs",
+    "about": "À propos",
+    "startTrial": "Essai gratuit"
+  },
+  "hero": {
+    "label": "Gestion de Studio, Réinventée",
+    "title": "Une Réservation Simple et Élégante pour Votre Studio Pilates",
+    "subtitle": "Tout ce dont votre studio boutique a besoin — planification, cours basés sur des crédits, gestion des membres et paiements — dans une plateforme élégante.",
+    "startTrial": "Essai gratuit"
+  },
+  "features": {
+    "label": "Fonctionnalités",
+    "title": "Conçu pour Votre Façon de Travailler",
+    "scheduling": {
+      "title": "Planification de Cours Sans Effort",
+      "description": "Planifiez votre semaine avec une vue calendrier magnifique. Créez des modèles de cours, définissez les capacités, assignez des instructeurs — tout en quelques secondes."
+    },
+    "payments": {
+      "title": "Modèles de Paiement Flexibles",
+      "description": "Crédits, forfaits de sessions, cartes-cadeaux ou sessions complémentaires — configurez ce qui convient à votre studio. Les participants voient leur solde en temps réel."
+    },
+    "analytics": {
+      "title": "Statistiques du Studio",
+      "description": "Connaissez votre communauté en profondeur. Suivez les réservations, les revenus, les membres actifs et les taux d'annulation en temps réel."
+    },
+    "financial": {
+      "title": "Clarté Financière",
+      "description": "Plus de jonglage avec des feuilles de calcul. Facturation automatique, suivi des paiements, rapports prêts pour les impôts et une vue d'ensemble claire des revenus."
+    }
+  },
+  "flexibleModels": {
+    "label": "Votre Modèle, Vos Règles",
+    "title": "Nous Nous Adaptons à Votre Façon de Gérer",
+    "subtitle": "Chaque studio est différent. Certains jurent par les crédits. D'autres préfèrent des forfaits simples. Avec Pilateq, vous choisissez ce qui fonctionne pour votre communauté.",
+    "creditSystem": {
+      "title": "Système de Crédits",
+      "description": "Les participants achètent des crédits et les utilisent par cours."
+    },
+    "sessionPackages": {
+      "title": "Forfaits de Sessions",
+      "description": "Vendez des forfaits de 5, 10 ou 20 sessions."
+    },
+    "giftCards": {
+      "title": "Cartes-Cadeaux",
+      "description": "Laissez votre communauté acheter des cartes-cadeaux."
+    },
+    "customRules": {
+      "title": "Règles Personnalisées",
+      "description": "Sessions gratuites, cours complémentaires, promotions."
+    },
+    "trust1": "Aucun modèle imposé",
+    "trust2": "Changez à tout moment",
+    "trust3": "Config. par participant",
+    "engineLabel": "Changez à tout moment — un moteur, tous les modèles"
+  },
+  "platform": {
+    "label": "La Plateforme",
+    "title": "Deux Vues, Une Expérience Sans Couture",
+    "subtitle": "Vos participants profitent d'une expérience de réservation calme et sans distraction. Vous obtenez un tableau de bord administrateur puissant.",
+    "explore": "Découvrir toutes les fonctionnalités",
+    "studentView": "Vue Participant",
+    "adminView": "Vue Admin"
+  },
+  "pricing": {
+    "label": "Tarifs",
+    "title": "Des Tarifs Simples et Transparents",
+    "subtitle": "Aucune limite de membres. Aucun frais caché. Choisissez les fonctionnalités qui correspondent à votre studio.",
+    "divider": "Besoin de quelque chose de différent?",
+    "starter": {
+      "name": "Starter",
+      "description": "Tout pour démarrer votre studio",
+      "features": [
+        "Membres et cours illimités",
+        "Planification de cours et calendrier",
+        "Système de réservation par crédits",
+        "Tableau de bord analytique de base",
+        "Support par e-mail"
+      ],
+      "excluded": [
+        "Comptabilité et rapports financiers",
+        "Support multi-locations",
+        "Personnalisation de la marque"
+      ]
+    },
+    "professional": {
+      "name": "Professional",
+      "description": "Pour les studios qui veulent le pack complet",
+      "badge": "Le Plus Populaire",
+      "features": [
+        "Tout ce qui est dans Starter",
+        "Comptabilité et rapports fiscaux",
+        "Gestion multi-locations",
+        "Personnalisation de la marque",
+        "Sync Google Calendar",
+        "Statistiques avancées et export",
+        "Support prioritaire"
+      ]
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "Conçu autour de votre studio",
+      "badge": "Sur Mesure",
+      "priceLabel": "Sur mesure",
+      "cta": "Demander un devis",
+      "explanation": "Les forfaits Starter et Professional vous donnent un accès instantané à notre application web avec une configuration standardisée. Enterprise est différent : nous adaptons Pilateq à vos besoins exacts.",
+      "features": [
+        "Tout ce qui est dans Professional",
+        "Développement de fonctionnalités individuelles",
+        "Workflows et automatisations personnalisés",
+        "Onboarding et formation personnalisés",
+        "Gestionnaire de compte dédié",
+        "SLA et réponse prioritaire",
+        "Option d'hébergement sur site"
+      ]
+    }
+  },
+  "finalCta": {
+    "title": "Prêt à Transformer Votre Studio?",
+    "subtitle": "Rejoignez les studios Pilates boutique à travers l'Europe qui font confiance à Pilateq.",
+    "button": "Commencez Votre Essai Gratuit de 14 Jours"
+  },
+  "footer": {
+    "tagline": "Une gestion de studio magnifique pour les professionnels du Pilates.",
+    "product": "Produit",
+    "resources": "Ressources",
+    "company": "Entreprise",
+    "contact": "Contact",
+    "legalNotice": "Mentions Légales",
+    "about": "À propos",
+    "legal": "Légal",
+    "copyright": "2026 Pilateq. Tous droits réservés.",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "cookies": "Cookies"
+  },
+  "contact": {
+    "label": "Contactez-nous",
+    "title": "Commencez Votre Essai Gratuit",
+    "subtitle": "Parlez-nous de votre studio et nous vous configurons un essai personnalisé de 14 jours. Aucune carte de crédit requise.",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "location": "Localisation",
+    "responseTime": "Temps de réponse",
+    "emailValue": "info@pilateq.de",
+    "phoneValue": "+49 151 68456178",
+    "locationValue": "Stuttgart, Allemagne",
+    "responseValue": "Dans les 24 heures",
+    "form": {
+      "name": "Votre Nom",
+      "email": "Adresse E-mail",
+      "studio": "Nom du Studio",
+      "message": "Message",
+      "messageOptional": "(optionnel)",
+      "namePlaceholder": "Marie Dupont",
+      "emailPlaceholder": "marie@votrestudio.com",
+      "studioPlaceholder": "Core Balance Studio",
+      "messagePlaceholder": "Parlez-nous de votre studio, combien de membres vous avez, ce que vous recherchez...",
+      "submit": "Commencer Mon Essai Gratuit",
+      "sending": "Envoi en cours...",
+      "disclaimer": "Aucune carte de crédit requise. Essai de 14 jours."
+    },
+    "nextSteps": {
+      "title": "Que se passe-t-il ensuite?",
+      "steps": [
+        "Nous examinons votre message dans les 24 heures",
+        "Vous recevez l'accès à votre compte d'essai",
+        "Nous planifions un appel d'onboarding rapide",
+        "Vous commencez à gérer votre studio magnifiquement"
+      ]
+    },
+    "success": {
+      "title": "Message Envoyé!",
+      "message": "Merci de nous avoir contactés. Nous vous répondrons dans les 24 heures avec votre accès d'essai.",
+      "back": "Retour à l'accueil"
+    }
+  },
+  "legal": {
+    "back": "Retour à Pilateq",
+    "pageTitle": "Mentions Légales",
+    "pageSubtitle": "Conformément à la loi",
+    "sections": {
+      "info": {
+        "title": "Informations",
+        "company": "Pilateq",
+        "address": "Stuttgart, Allemagne"
+      },
+      "contact": {
+        "title": "Contact",
+        "email": "E-mail",
+        "phone": "Téléphone"
+      },
+      "vat": {
+        "title": "TVA",
+        "text": "Numéro d'identification TVA"
+      },
+      "dispute": {
+        "title": "Résolution des litiges",
+        "text": "La Commission Européenne fournit une plateforme de résolution des litiges en ligne (RLL):"
+      }
+    }
+  },
+  "privacy": {
+    "back": "Retour à Pilateq",
+    "pageTitle": "Politique de Confidentialité",
+    "pageSubtitle": "Dernière mise à jour: Juin 2026",
+    "dataController": "Data Controller",
+    "dataControllerText": "The data controller within the meaning of the GDPR is Pilateq, Stuttgart, Germany. Email: info@pilateq.de",
+    "dataCollected": "Data We Collect",
+    "dataCollectedText": "When you use Pilateq, we process account data (name, email), studio data (business name, address, schedules), member data (names and contacts entered by you), booking data (registrations, credit balances, payments), and usage data (login times, feature usage).",
+    "purpose": "Purpose of Processing",
+    "purposeText": "We process your data solely to provide and improve the Pilateq booking and management platform. We do not sell your data to third parties.",
+    "legalBasis": "Legal Basis",
+    "legalBasisText": "The legal basis for processing is Art. 6(1)(b) GDPR (contractual necessity) for providing our service, and Art. 6(1)(a) GDPR (consent) for marketing communications where applicable.",
+    "storage": "Data Storage",
+    "storageText": "Your data is stored on secure servers within the European Union. We implement industry-standard encryption (TLS/SSL) for data transmission and at-rest encryption for stored data.",
+    "rights": "Your Rights",
+    "rightsText": "Under the GDPR, you have the right to access, rectify, erase, restrict, port, and object to processing of your personal data. Contact us at info@pilateq.de to exercise these rights.",
+    "cookies": "Cookies",
+    "cookiesText": "Pilateq uses only essential cookies necessary for the operation of the platform (session management, authentication). We do not use tracking or advertising cookies.",
+    "changes": "Changes to This Policy",
+    "changesText": "We may update this privacy policy from time to time. We will notify you of any significant changes via email or through the platform."
+  },
+  "terms": {
+    "back": "Retour à Pilateq",
+    "pageTitle": "Conditions Générales",
+    "pageSubtitle": "Dernière mise à jour: Juin 2026"
+  },
+  "language": {
+    "title": "Langue",
+    "en": "English",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "es": "Español"
+  },
+  "about": {
+    "back": "Retour à Pilateq",
+    "roleLabel": "Stratégie & Développement",
+    "pageTitle": "À propos.",
+    "pageSubtitle": "La personne derrière Pilateq.",
+    "age": "27 ans",
+    "journeyTitle": "Mon parcours.",
+    "journey1Title": "Séjour au Chili & au Pérou",
+    "journey1Text": "Avant mes études, j'ai passé presque un an au Chili et au Pérou. Cette période a aiguisé ma perspective : j'ai vécu de près comment les dépendances numériques façonnent les pays et les entreprises.",
+    "journey2Title": "Licence Médias Mobiles — 1,3",
+    "journey2Text": "J'ai terminé mes études en Médias Mobiles à l'université de Stuttgart avec un mémoire sur l'électromobilité IoT — mention 1,3. J'ai mené l'ensemble du processus de manière autonome.",
+    "journey3Title": "IT Solution Designer & Digital Project Manager",
+    "journey3Text": "Depuis 2024, je travaille comme IT Solution Designer & Digital Project Manager au sein du Présidium DHBW. Je dirige des projets de digitalisation et fais évoluer le système de campus management.",
+    "skillsTitle": "Ce que j'apporte.",
+    "skill1Title": "UX-Stratégie & Research",
+    "skill1Desc": "Entretiens utilisateurs, card sorting, UEQ, think-aloud — de l'analyse à la solution validée.",
+    "skill2Title": "Développement Frontend",
+    "skill2Desc": "Vue, Nuxt, TypeScript, Tailwind. Je parle le langage des développeurs et construis ce que je conçois.",
+    "skill3Title": "Product Ownership",
+    "skill3Desc": "Maintenance du backlog, gestion des parties prenantes, ingénierie des exigences en équipes agiles.",
+    "skill4Title": "Prototypage",
+    "skill4Desc": "Figma et Framer pour des prototypes interactifs qui rendent les idées tangibles.",
+    "languagesTitle": "Langues.",
+    "lang1": "Allemand — Langue maternelle",
+    "lang2": "Anglais — Courant professionnel",
+    "lang3": "Espagnol — Courant professionnel",
+    "ctaText": "En savoir plus ? Parlons de votre studio.",
+    "ctaButton": "Me contacter",
+    "philosophyTitle": "Pourquoi j'ai créé Pilateq.",
+    "philosophyIntro": "Je suis une équipe d'une personne. Pas d'agence, pas de co-fondateur — juste moi, travaillant de manière indépendante avec une vision claire : créer des logiciels qui conviennent vraiment aux personnes qui les utilisent. Chaque ligne de code, chaque décision de design, chaque fonctionnalité est façonnée par la conviction que les studios boutique méritent des outils aussi individuels qu'eux.",
+    "phi1Title": "Centré sur l'utilisateur par conviction",
+    "phi1Text": "Des entretiens utilisateurs aux tests think-aloud — chaque fonctionnalité est validée avec de vrais propriétaires de studio avant de devenir du code.",
+    "phi2Title": "Une taille ne convient à personne",
+    "phi2Text": "Pas de modèles imposés. Chaque studio obtient la flexibilité de configurer les crédits, les sessions et les règles exactement comme il le souhaite.",
+    "phi3Title": "Solo, pas seul",
+    "phi3Text": "Je développe Pilateq de manière indépendante, mais je suis profondément connecté à la communauté. Les retours d'information s'intègrent directement dans le produit.",
+    "phi4Title": "Conçu avec soin",
+    "phi4Text": "Attention aux détails dans le design, les performances et l'expérience utilisateur — car la gestion de votre studio devrait être sans effort."
+  }
+}
